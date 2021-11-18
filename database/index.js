@@ -1,31 +1,8 @@
 const express = require('express');
-const {Sequelize, DataTypes} = require('sequelize');
 const app = express();
-const Info = require('../models/info.js');
-const Info_photos = require('../models/Info_photos.js');
-const Characteristics_data = require('../models/Characterisitcs_data.js');
-const Characteristics_reviews = require('../models/Characteristics_reviews.js');
+const {Info, Info_photos, Characteristics_data, Characteristics_reviews} = require('./sequelize.js')
 const port = 3000;
 app.use(express.json());
-
-const sequelize = new Sequelize('reviews_api', 'jkum1', '123', {
-  host: 'localhost',
-  dialect: 'postgres',
-  define: {
-    timestamps: false,
-    freezeTableName: true,
-  }
-});
-
-sequelize.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
-
-sequelize.sync();
 
 app.get('/reviews', (req, res) => {
   var productId = req.body.product_id;
