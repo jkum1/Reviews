@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     date: {
-      type: DataTypes.BIGINT
+      type: DataTypes.BIGINT,
+      defaultValue: DataTypes.literal('CURRENT_TIMESTAMP')
     },
     summary: {
       type: DataTypes.TEXT

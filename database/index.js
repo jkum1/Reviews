@@ -146,4 +146,63 @@ app.get('/reviews/meta', (req, res) => {
     })
 });
 
+app.post('/reviews', (req, res) => {
+  Info.create({
+    product_id: req.body.product_id,
+    rating: req.body.rating,
+    summary: req.body.summary,
+    body: req.body.body,
+    recommended: req.body.recommend,
+    reviewer_name: req.body.name,
+    reviewer_email: req.body.email
+  })
+  .then((data, err) => {
+    var list = req.body.photos.map((entry) => {
+      return Info_photos.create({
+        review_id: data.id,
+        url: entry
+      })
+    });
+    Promise.all(list)
+      .then((value, err) => {
+        if (err) {
+          throw err;
+        } else {
+          res.send(value);
+        }
+      })
+  })
+  .catch((err) => {
+    res.send(err);
+  });
+});
+
+app.put('/reviews/:review_id/helpful', (req, res) => {
+  Info.update({recommended: true}, {
+    where: {
+      id: req.body.review_id
+    }
+  })
+    .then((data, err) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+});
+
+app.put('/reviews/:review_id/report', (req, res) => {
+  Info.update({reported: true}, {
+    where: {
+      id: req.body.review_id
+    }
+  })
+    .then((data, err) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+});
+
 app.listen(port, () => console.log(`listening on port ${port}!`))
