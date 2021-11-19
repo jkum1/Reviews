@@ -152,27 +152,38 @@ app.post('/reviews', (req, res) => {
     rating: req.body.rating,
     summary: req.body.summary,
     body: req.body.body,
+    date: Date.now(),
     recommended: req.body.recommend,
     reviewer_name: req.body.name,
     reviewer_email: req.body.email
   })
   .then((data, err) => {
-    var list = req.body.photos.map((entry) => {
+    var listA = req.body.photos.map((entry) => {
       return Info_photos.create({
         review_id: data.id,
         url: entry
       })
     });
-    Promise.all(list)
-      .then((value, err) => {
+    var photos = Promise.all(listA);
+    var listB = Object.keys(req.body.characteristics).map((entry) => {
+      return Characteristics_reviews.create({
+        characteristic_id: entry,
+        review_id: data.id,
+        value: req.body.characteristics[entry]
+      })
+    });
+    var reviews_char = Promise.all(listB);
+    Promise.all(listA, listB)
+      .then((entry, err) => {
         if (err) {
           throw err;
         } else {
-          res.send(value);
+          res.send(entry);
         }
-      })
+      });
   })
   .catch((err) => {
+    console.log(err);
     res.send(err);
   });
 });

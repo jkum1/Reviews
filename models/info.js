@@ -2,6 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define('info', {
     id: {
       type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true
     },
     product_id: {
@@ -11,8 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     date: {
-      type: DataTypes.BIGINT,
-      defaultValue: DataTypes.literal('CURRENT_TIMESTAMP')
+      type: DataTypes.BIGINT
     },
     summary: {
       type: DataTypes.TEXT
