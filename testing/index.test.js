@@ -1,5 +1,9 @@
 const pactum = require('pactum');
 
+
+//test get/reviews
+//------------------------------------------------------------------------------------
+
 it('should return 5 reviews', async () => {
   await pactum.spec()
     .get('http://localhost:3000/reviews')
@@ -101,3 +105,45 @@ it('should return 5 reviews', async () => {
       ]
   });
 });
+
+it('reviews 5 should be fast', async() => {
+  await pactum.spec()
+    .get('http://localhost:3000/reviews')
+    .withBody({'product_id': 40344})
+    .expectStatus(200)
+    .expectResponseTime(15);
+});
+
+//===============================================================================================================
+
+//test review/meta
+//-----------------------------------------------------------------------------------------------------------------
+it('meta should be fast', async() => {
+  await pactum.spec()
+    .get('http://localhost:3000/reviews/meta')
+    .withBody({'product_id': 40344})
+    .expectStatus(200)
+    .expectResponseTime(15);
+});
+
+//===================================================================================================================
+
+//test post review
+//-----------------------------------------------------------------------------------------------------------------
+it('should post a review', async() => {
+  await pactum.spec()
+  .post('http://localhost:3000/reviews/meta')
+  .withBody({
+    'product_id': 40344,
+    'rating': 5,
+    'summary': 'love the testing phase',
+    'body': 'love the testing phase we are now so far far away im going crazy today',
+    'recommend': true,
+    'name': 'jinho',
+    'email': 'jinho.kum@gmail.com',
+    'photos': ['test1', 'test2', 'test3'],
+    'characteristics': {"14": 4, "15": 5}
+  })
+  .expectStatus(201);
+});
+//====================================================================================================================
