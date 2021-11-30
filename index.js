@@ -83,31 +83,34 @@ app.get('/reviews/meta', (req, res) => {
     },
     attributes: ['rating', 'recommended']
   })
-    .then((ratings_reccomended) => {
+    .then((ratings_reccomended, err) => {
+      if (err) {
+        throw err;
+      } else {
+        var tempRatings = {}; //container for all ratings (1-5) and there values
+        var tempReccomended = { //container for boolean recomend
+          false: 0,
+          true: 0
+        };
 
-      var tempRatings = {}; //container for all ratings (1-5) and there values
-      var tempReccomended = { //container for boolean recomend
-        false: 0,
-        true: 0
-      };
+        for (var i = 0; i < ratings_reccomended.length; ++i) {
+          var valueRating = ratings_reccomended[i].rating;
+          var valueReccomended = ratings_reccomended[i].recommended;
+          if (tempRatings[valueRating] !== undefined) {
+            tempRatings[valueRating] += 1;
+          } else {
+            tempRatings[valueRating] = 1;
+          }
+          if (valueReccomended) {
+            tempReccomended['true'] += 1;
+          } else {
+            tempReccomended['false'] += 1;
+          }
+        }
 
-      for (var i = 0; i < ratings_reccomended.length; ++i) {
-        var valueRating = ratings_reccomended[i].rating;
-        var valueReccomended = ratings_reccomended[i].recommended;
-        if (tempRatings[valueRating] !== undefined) {
-          tempRatings[valueRating] += 1;
-        } else {
-          tempRatings[valueRating] = 1;
-        }
-        if (valueReccomended) {
-          tempReccomended['true'] += 1;
-        } else {
-          tempReccomended['false'] += 1;
-        }
+        final['ratings'] = tempRatings;
+        final['recommended'] = tempReccomended;
       }
-
-      final['ratings'] = tempRatings;
-      final['recommended'] = tempReccomended;
 
     })
     .then((empty, err) => { //then we look into characteristics

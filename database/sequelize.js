@@ -10,7 +10,8 @@ const sequelize = new Sequelize('reviews_api', 'jkum1', '123', {
   define: {
     timestamps: false,
     freezeTableName: true,
-  }
+  },
+  logging: false
 });
 
 const Info = InfoModel(sequelize, Sequelize);
