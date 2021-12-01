@@ -3,14 +3,16 @@ const InfoModel = require('../models/info.js');
 const Info_photosModel = require('../models/Info_photos.js');
 const Characteristics_dataModel = require('../models/Characteristics_data.js');
 const Characteristics_reviewsModel = require('../models/Characteristics_reviews.js');
+const config = require('../config.js')
 
-const sequelize = new Sequelize('reviews_api', 'jkum1', '123', {
+const sequelize = new Sequelize(config.db_name, config.user, config.password, {
   host: 'localhost',
   dialect: 'postgres',
   define: {
     timestamps: false,
     freezeTableName: true,
-  }
+  },
+  logging: false
 });
 
 const Info = InfoModel(sequelize, Sequelize);
