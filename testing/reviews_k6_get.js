@@ -7,6 +7,6 @@ export const options = {
 };
 
 export default function () {
-  // http.get('http://localhost:3000/reviews?product_id=' + (Math.floor(Math.random() * 1000000)));
+  http.get('http://localhost:3000/reviews?product_id=' + (Math.floor(Math.random() * 1000000)));
   // http.get('http://localhost:3000/reviews/meta?product_id=' + (Math.floor(Math.random() * 1000000)));
 }

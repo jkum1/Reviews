@@ -9,10 +9,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/reviews', (req, res) => {
-  var productId = req.body.product_id;
-  var page = req.body.page === undefined ? 0:req.body.page;
-  var count = req.body.count === undefined ? 5:req.body.count;
-  var sort = req.body.sort === undefined ? 'newest':req.body.sort;
+  var productId = req.query.product_id;
+  var page = req.query.page === undefined ? 0:req.query.page;
+  var count = req.query.count === undefined ? 5:req.query.count;
+  var sort = req.query.sort === undefined ? 'newest':req.query.sort;
 
   var final = { //data format which will be sent over
     product: productId,
@@ -71,7 +71,7 @@ app.get('/reviews', (req, res) => {
 });
 
 app.get('/reviews/meta', (req, res) => {
-  var productId = req.body.product_id;
+  var productId = req.query.product_id;
 
   var final = { //final format needed to send over data
     product_id: productId
@@ -219,7 +219,7 @@ app.post('/reviews', (req, res) => {
 app.put('/reviews/:review_id/helpful', (req, res) => {
   Info.update({recommended: true}, {
     where: {
-      id: req.body.review_id
+      id: req.params.review_id
     }
   })
     .then((data, err) => {
@@ -237,7 +237,7 @@ app.put('/reviews/:review_id/helpful', (req, res) => {
 app.put('/reviews/:review_id/report', (req, res) => {
   Info.update({reported: true}, {
     where: {
-      id: req.body.review_id
+      id: req.params.review_id
     }
   })
     .then((data, err) => {
